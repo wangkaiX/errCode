@@ -4,3 +4,5 @@
 # 格式：
 # 枚举值,  错误信息, 错误码
 # Success    成功     0
+#
+# 使用时复制一份run.py 以防冲突, 修改gitAddList, 将其中的run.py替换为run.copyname.py
