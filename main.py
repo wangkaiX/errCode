@@ -15,7 +15,7 @@ dstLanguages = ["go"]
 srcErrFiles = []
 
 # 需要同步及更新的文件
-gitAddList = ["genErrCode.py", "etc/*.err", "etc/range.config", "etc/*.template", "pkg/*.py", "readme"]
+gitAddList = ["genErrorCode.py", "etc/*.err", "etc/range.config", "etc/*.template", "pkg/*.py", "readme", "main.py"]
 
 if __name__ == "__main__":
     genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList)
