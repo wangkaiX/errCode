@@ -12,6 +12,9 @@ from pkg.ErrCode import ErrCode
 dstDirs = defines.dstDirs
 dstLanguages = defines.dstLanguages
 srcErrFiles = defines.srcErrFiles
+gitAddList = defines.gitAddList
+
+
 cf = ConfigParser.ConfigParser()
 configFile = "etc/range.config"
 
@@ -76,6 +79,8 @@ def readErrs():
 if __name__ == "__main__":
     assert(len(dstDirs) and len(dstLanguages))
     assert(os.path.exists(configFile))
+    # 先更新git
+    os.system("git pull")
     cf.read(configFile)
     # 读入错误配置
     readErrs()
@@ -88,4 +93,12 @@ if __name__ == "__main__":
             genJava()
         else:
             assert False
+
+    # 同步git
+    strAdd = "git add " + " ".join(gitAddList)
+    print strAdd
+    os.system(strAdd)
+    os.system("git commit -m\"更新错误码\"")
+    os.system("git push")
+
 
