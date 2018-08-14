@@ -8,7 +8,7 @@ class JavaGen:
         self.dstDirs = dstDirs
 
     def gen(self):
-        for err in self.errCodes:
+        for errCode in self.errCodes:
             pass
 
 
