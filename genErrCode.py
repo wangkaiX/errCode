@@ -80,7 +80,8 @@ if __name__ == "__main__":
     assert(len(dstDirs) and len(dstLanguages))
     assert(os.path.exists(configFile))
     # 先更新git
-    os.system("git pull")
+    if 0 != os.system("git pull"):
+        assert False
     cf.read(configFile)
     # 读入错误配置
     readErrs()
@@ -99,6 +100,7 @@ if __name__ == "__main__":
     print strAdd
     os.system(strAdd)
     os.system("git commit -m\"更新错误码\"")
-    os.system("git push")
+    if 0 != os.system("git push"):
+        assert False
 
 
