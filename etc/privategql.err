@@ -1,0 +1,6 @@
+UserNotFound               用户不存在                                       40000
+JobStatusMismatched        作业状态不匹配
+JobNotFound                作业不存在
+SaveAlgoFailed             保存算法失败
+UpdateDbFailed             更新数据库失败
+QueryDbFailed              查询数据库失败

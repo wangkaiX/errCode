@@ -1,0 +1,31 @@
+package %PackageName%
+
+import (
+    "encoding/json"
+    "errors"
+)
+
+type ErrCode int
+
+const (
+%ErrKeyList%
+)
+
+var ErrMsgMap = map[ErrCode]string {
+%ErrValueList%
+}
+
+type CustomError struct {
+    RetCode ErrCode  `json:"retCode"`
+    Message string   `json:"message"`
+}
+
+func (CustomError *ce)ToError()(error) {
+    bError, _ := json.Marshal(ce)
+    return errors.New(string(bError))
+}
+
+func genCustomError(errCode ErrCode) (err error) {
+    bError, _ := json.Marshal(CustomError{errCode, ErrMsgMap[errCode]})
+    return errors.New(string(bError))
+}
