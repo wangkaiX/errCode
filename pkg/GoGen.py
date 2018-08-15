@@ -24,7 +24,6 @@ class GoGen:
         for errCode in self.errCodes:
             errKeyList += (bl + "%-32s ErrCode = %d" + el) % (errCode.code, errCode.value)
             errValueList += (bl + "%-32s\"%s\"," + el) % (errCode.code+":", errCode.msg)
-        print errKeyList
         strTemplate = strTemplate.replace("%ErrKeyList%", errKeyList)
         strTemplate = strTemplate.replace("%ErrValueList%", errValueList)
         # 生成错误映射
