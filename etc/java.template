@@ -2,29 +2,7 @@ package cn.ucloud.bean;
 
 public enum SysCode {
 %ErrList%
-
-    SUCCESS(0, "success"),
-
-    SCHEMA_TABLE_NOT_ALLOWED(1000, "Schema Or Table Name Is Not Allowed"),
-
-    SELECT_NO_READ_PERMISSION(1001, "Select Statement Needs Read Permission"),
-
-    INSERT_NO_WRITE_PERMISSION(1002, "Insert(Overwrite) Statement Needs Write Permission"),
-
-    CREATE_TABLE_ALREADY_EXIST(1003, "Create Table Name Has Already Existed. Please use another one"),
-
-    DROP_NO_EXECUTE_PERMISSION(1004, "Drop Statement Needs Execute Permission"),
-
-    TRUNCATE_NO_EXECUTE_PERMISSION(1005, "Truncate Statement Needs Execute Permission"),
-
-    ALTER_NO_EXECUTE_PERMISSION(1006, "Alter Statement Needs Execute Permission"),
-
-    HQL_STATEMENT_NOT_SUPPORTED(1007, "Statement is not supported. Only support select, insert into, insert overwrite, create table, drop table, truncate table, alter table"),
-
-    HQL_STATEMENT_OUT_OF_EXPECTED_TYPE(1008, "Statement Is Out Of Expected Type"),
-
-    HQL_STATEMENT_IN_UNEXPECTED_TYPE(1009, "Statement Is In Unexpected Type");
-
+    ;
     private int code;
     private String message;
 
