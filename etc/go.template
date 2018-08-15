@@ -20,7 +20,7 @@ type CustomError struct {
     Message string   `json:"message"`
 }
 
-func (CustomError *ce)ToError()(error) {
+func (ce *CustomError)ToError()(error) {
     bError, _ := json.Marshal(ce)
     return errors.New(string(bError))
 }
