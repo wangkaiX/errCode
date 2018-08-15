@@ -41,7 +41,9 @@ def readFile(fileName):
     file = open(fileName)
     value = -1
     errList = []
+    i = 0
     for l in file.readlines():
+        i = i + 1
         if '#' == l[0]:
             continue
         errCode = l.split()
@@ -53,7 +55,7 @@ def readFile(fileName):
             code, msg, value = errCode
             value = int(value)
         else:
-            print "配置文件有误[" + fileName + "]"
+            print "配置文件[" + fileName + "]有误, 第" + str(i) + "行"
             assert False
         errList.append(ErrCode(code, msg, value))
 
@@ -143,7 +145,6 @@ def genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList):
 
     # 同步git
     strAdd = "git add " + " ".join(gitAddList)
-    print strAdd
     os.system(strAdd)
     os.system("git commit -m\"更新错误码\"")
     if 0 != os.system("git push"):
