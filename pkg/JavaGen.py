@@ -17,7 +17,6 @@ class JavaGen:
         errList = ""
         for errCode in self.errCodes:
             errList += (bl + "%s(%d, \"%s\")," + el) % (errCode.code, errCode.value, errCode.msg)
-        print errList
         strTemplate = strTemplate.replace("%ErrList%", errList)
         # 生成错误映射
         for dstDir in self.dstDirs:
