@@ -1,6 +1,7 @@
 package cn.ucloud.bean;
 
 public enum SysCode {
+%ErrList%
 
     SUCCESS(0, "success"),
 
