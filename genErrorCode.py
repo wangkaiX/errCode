@@ -1,23 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, sys
-#import defines
+
+import os
+import sys
+from collections import defaultdict
 import ConfigParser
 from pkg.JavaGen import JavaGen
 from pkg.GoGen import GoGen
 from pkg.CGen import CGen
 from pkg.ErrCode import ErrCode
 
-#dstDirs = defines.dstDirs
-#dstLanguages = defines.dstLanguages
-#srcErrFiles = defines.srcErrFiles
-#gitAddList = defines.gitAddList
-
 
 cf = ConfigParser.ConfigParser()
 configFile = "etc/range.config"
-
 
 
 def genGo(errList, dstDirs):
@@ -61,7 +57,6 @@ def readFile(fileName):
             assert False
         errList.append(ErrCode(code, msg, value))
 
-    #print errList
     return errList
 
 
@@ -74,7 +69,57 @@ def readErrs(srcErrFiles):
     return errList
 
 
-# if __name__ == "__main__":
+def checkErrorRange(cf):
+    class ErrorRange:
+        def __init__(self, b, e):
+            self.b = b
+            self.e = e
+
+        def __str__(self):
+            return str(self.b) + " " + str(self.e)
+
+    # 检测每个项目的错误码范围是否有重合
+    errorRangeDict = defaultdict(list)
+    for section in cf.sections():
+        i = 0
+        b = "begin" + str(i)
+        e = "end" + str(i)
+        while cf.has_option(section, b) and cf.has_option(section, e):
+            errorRangeDict[section].append(ErrorRange(cf.getint(section, b), cf.getint(section, e)))
+            i = i+1
+            b = "begin" + str(i)
+            e = "end" + str(i)
+    errorRangeLists = errorRangeDict.values()
+    errorRangeList = []
+    for l in errorRangeLists:
+        errorRangeList += l
+    # for i in range(0, len(errorRangeList)):
+    #     print errorRangeList[i].b, errorRangeList[i].e
+
+    for i in range(0, len(errorRangeList)):
+        assert(errorRangeList[i].b < errorRangeList[i].e)
+        for j in range(i+1, len(errorRangeList)):
+            if (errorRangeList[j].b <= errorRangeList[i].b <= errorRangeList[j].e) \
+            or (errorRangeList[j].b <= errorRangeList[i].e <= errorRangeList[j].e) \
+            or (errorRangeList[i].b <= errorRangeList[j].b <= errorRangeList[i].e):
+                print "项目错误码范围重叠"
+                assert False
+
+    # 检测每个项目是否超过所规则的错误码范围
+    srcErrFiles = os.popen("ls etc/*.err").read().split()
+    for srcErrFile in srcErrFiles:
+        section = os.path.basename(srcErrFile).split(".")[0]
+        if not cf.has_section(section):
+            print "请先给项目[" + section + "]配置错误码范围"
+            assert False
+        errList = readFile(srcErrFile)
+        for err in errList:
+            for errRange in errorRangeDict[section]:
+                if not errRange.b <= err.value <= errRange.e:
+                    print "错误码[" + section + "][" + err.code + "]超过范围"
+                    assert False
+
+
 def genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList):
     assert(len(dstDirs) and len(dstLanguages))
     assert(os.path.exists(configFile))
@@ -82,6 +127,8 @@ def genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList):
     if 0 != os.system("git pull"):
         assert False
     cf.read(configFile)
+    # 检查错误码范围是否有重叠
+    checkErrorRange(cf)
     # 读入错误配置
     errList = readErrs(srcErrFiles)
     for dstLanguage in dstLanguages:
@@ -101,5 +148,3 @@ def genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList):
     os.system("git commit -m\"更新错误码\"")
     if 0 != os.system("git push"):
         assert False
-
-
