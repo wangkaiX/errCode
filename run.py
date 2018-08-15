@@ -5,7 +5,7 @@ from genErrorCode import genErrors
 
 # ["pro/src/"]不指定则不生成
 # dstDirs = ["../", "/tmp", "."]
-dstDirs = ["."]
+dstDirs = ["../privategql/resolvers", "../sf-project-mgr/object/"]
 
 # ["c", "java", "go"]不指定则不生成
 # dstLanguages = ["c", "java", "go"]
