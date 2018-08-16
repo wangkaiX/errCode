@@ -42,8 +42,10 @@ def git_pull():
         assert False
     if 0 != os.system("git pull"):
         assert False
-    if 0 != os.system("git stash pop"):
+    ret = os.system("git stash pop")
+    if 0 != ret and 1 != ret:
         assert False
+
 
 def readFile(fileName):
     file = open(fileName, "r")
