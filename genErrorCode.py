@@ -36,12 +36,21 @@ def genC(errList, dstDirs):
 
     return
 
+def git_pull():
+    if 0 != os.system("git stash"):
+        assert False
+    if 0 != os.system("git pull"):
+        assert False
+    if 0 != os.system("git stash pop"):
+        assert False
 
 def readFile(fileName):
     file = open(fileName, "r")
     value = -1
     errList = []
     i = 0
+    # 先同步git
+    git_pull()
     lines = file.readlines()
     for l in lines:
         i = i + 1
@@ -140,12 +149,6 @@ def checkErrorRange(cf):
 
 
 def gitSync(gitAddList):
-    # 先切换到开始分支
-    # if 0 != os.system("git checkout dev"):
-    #     assert False
-    # 先更新git
-    if 0 != os.system("git pull"):
-        assert False
     # 同步git
     strAdd = "git add " + " ".join(gitAddList)
     if 0 != os.system(strAdd):
