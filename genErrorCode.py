@@ -38,11 +38,12 @@ def genC(errList, dstDirs):
 
 
 def readFile(fileName):
-    file = open(fileName)
+    file = open(fileName, "r")
     value = -1
     errList = []
     i = 0
-    for l in file.readlines():
+    lines = file.readlines()
+    for l in lines:
         i = i + 1
         if '#' == l[0]:
             continue
@@ -60,6 +61,14 @@ def readFile(fileName):
             print "配置文件[" + fileName + "]有误, 第" + str(i) + "行"
             assert False
         errList.append(ErrCode(code, msg, value))
+    # 增加防冲突分割线
+    file = open(fileName+".bak", "w")
+    lines.reverse()
+    while lines[0][0] == '#':
+        lines.pop(0)
+    lines.reverse()
+    lines.append('#' * 80)
+    file.writelines(lines)
 
     return errList
 
