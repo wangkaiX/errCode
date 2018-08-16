@@ -48,7 +48,9 @@ def readFile(fileName):
             continue
         errCode = l.split()
         if 2 == len(errCode):
-            assert(-1 != value)
+            if -1 == value:
+                print "没有配置起始错误码!"
+                assert(-1 != value)
             code, msg = errCode
             value = value + 1
         elif 3 == len(errCode):
