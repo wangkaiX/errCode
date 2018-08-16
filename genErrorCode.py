@@ -43,11 +43,11 @@ def git_pull():
         assert False
     if 0 != os.system("git pull"):
         assert False
-    prog = subprocess.Popen("git stash pop", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    retstr = prog.communicate()
-    print retstr
-    if -1 == retstr.find("Dropped") and \
-            -1 == retstr.find("No Stash"):
+    prog = subprocess.Popen(["git", "stash", "pop"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (outstr, errstr) = prog.communicate()
+    print outstr, errstr
+    if -1 == outstr.find("Dropped") and \
+            -1 == errstr.find("No Stash"):
         assert False
 
 
