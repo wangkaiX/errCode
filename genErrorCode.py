@@ -62,15 +62,18 @@ def readFile(fileName):
             assert False
         errList.append(ErrCode(code, msg, value))
     # 增加防冲突分割线
-    file = open(fileName+".bak", "w")
-    i = 0
+    file = open(fileName, "w")
+    i = None
+    cut_off = '#' * 80 + '\n'
     try:
-        i = lines.index('#' * 80)
+        i = lines.index(cut_off)
     except ValueError:
-        lines.append('#' * 80)
+        print fileName, "没有分割线"
+        lines.append(cut_off)
     else:
-        lines.pop(lines.index('#' * 80))
-        lines.append('#' * 80)
+        print fileName, "有分割线"
+        lines.pop(i)
+        lines.append(cut_off)
     file.writelines(lines)
 
     return errList
@@ -136,12 +139,26 @@ def checkErrorRange(cf):
                     assert False
 
 
-def genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList):
-    assert(len(dstDirs) and len(dstLanguages))
-    assert(os.path.exists(configFile))
+def gitSync(gitAddList):
+    # 先切换到开始分支
+    # if 0 != os.system("git checkout dev"):
+    #     assert False
     # 先更新git
     if 0 != os.system("git pull"):
         assert False
+    # 同步git
+    strAdd = "git add " + " ".join(gitAddList)
+    if 0 != os.system(strAdd):
+        assert False
+    if 0 != os.system("git commit -m\"更新错误码\""):
+        assert False
+    if 0 != os.system("git push"):
+        assert False
+
+
+def genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList):
+    assert(len(dstDirs) and len(dstLanguages))
+    assert(os.path.exists(configFile))
     cf.read(configFile)
     # 检查错误码范围是否有重叠
     checkErrorRange(cf)
@@ -156,12 +173,5 @@ def genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList):
             genJava(errList, dstDirs)
         else:
             assert False
+    gitSync(gitAddList)
 
-    # 同步git
-    strAdd = "git add " + " ".join(gitAddList)
-    if 0 != os.system(strAdd):
-        assert False
-    if 0 != os.system("git commit -m\"更新错误码\""):
-        assert False
-    if 0 != os.system("git push"):
-        assert False
