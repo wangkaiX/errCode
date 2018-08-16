@@ -49,8 +49,6 @@ def readFile(fileName):
     value = -1
     errList = []
     i = 0
-    # 先同步git
-    git_pull()
     lines = file.readlines()
     for l in lines:
         i = i + 1
@@ -162,6 +160,8 @@ def gitSync(gitAddList):
 def genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList):
     assert(len(dstDirs) and len(dstLanguages))
     assert(os.path.exists(configFile))
+    # 先同步git
+    git_pull()
     cf.read(configFile)
     # 检查错误码范围是否有重叠
     checkErrorRange(cf)
