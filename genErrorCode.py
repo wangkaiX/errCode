@@ -145,7 +145,9 @@ def genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList):
 
     # 同步git
     strAdd = "git add " + " ".join(gitAddList)
-    os.system(strAdd)
-    os.system("git commit -m\"更新错误码\"")
+    if 0 != os.system(strAdd):
+        assert False
+    if 0 != os.system("git commit -m\"更新错误码\""):
+        assert False
     if 0 != os.system("git push"):
         assert False
