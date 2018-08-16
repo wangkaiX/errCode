@@ -3,6 +3,7 @@
 
 
 import os
+import subprocess
 import sys
 from collections import defaultdict
 import ConfigParser
@@ -42,10 +43,11 @@ def git_pull():
         assert False
     if 0 != os.system("git pull"):
         assert False
-    ret = os.popen("git stash pop").read()
-    print "ret:[" + ret + "]"
-    if -1 == ret.find("Dropped") and \
-            -1 == ret.find("No Stash"):
+    prog = subprocess.Popen("git stash pop", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    retstr = prog.communicate()
+    print retstr
+    if -1 == retstr.find("Dropped") and \
+            -1 == retstr.find("No Stash"):
         assert False
 
 
