@@ -42,9 +42,9 @@ def git_pull():
         assert False
     if 0 != os.system("git pull"):
         assert False
-    ret = os.system("git stash pop")
-    print ret
-    if 0 != ret and 1 != ret:
+    ret = os.popen("git stash pop").read()
+    if -1 == ret.find("Dropped") and \
+            -1 == ret.find("No Stash"):
         assert False
 
 
