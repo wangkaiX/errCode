@@ -63,11 +63,14 @@ def readFile(fileName):
         errList.append(ErrCode(code, msg, value))
     # 增加防冲突分割线
     file = open(fileName+".bak", "w")
-    lines.reverse()
-    while lines[0][0] == '#':
-        lines.pop(0)
-    lines.reverse()
-    lines.append('#' * 80)
+    i = 0
+    try:
+        i = lines.index('#' * 80)
+    except ValueError:
+        lines.append('#' * 80)
+    else:
+        lines.pop(lines.index('#' * 80))
+        lines.append('#' * 80)
     file.writelines(lines)
 
     return errList
