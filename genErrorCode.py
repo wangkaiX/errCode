@@ -47,7 +47,7 @@ def git_pull():
     (outstr, errstr) = prog.communicate()
     print outstr, errstr
     if -1 == outstr.find("Dropped") and \
-            -1 == errstr.find("No Stash"):
+            -1 == errstr.find("No stash"):
         assert False
 
 
