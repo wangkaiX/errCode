@@ -64,7 +64,7 @@ def readFile(fileName):
     # 增加防冲突分割线
     file = open(fileName, "w")
     i = None
-    cut_off = '#' * 80 + '\n'
+    cut_off = '#' * 20 + "在分割线后增加" + '#' * 20 + '\n'
     try:
         i = lines.index(cut_off)
     except ValueError:
