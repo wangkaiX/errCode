@@ -75,10 +75,8 @@ def readFile(fileName):
     try:
         i = lines.index(cut_off)
     except ValueError:
-        print fileName, "没有分割线"
         lines.append(cut_off)
     else:
-        print fileName, "有分割线"
         lines.pop(i)
         lines.append(cut_off)
     file.writelines(lines)
