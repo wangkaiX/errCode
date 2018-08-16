@@ -36,8 +36,9 @@ def genC(errList, dstDirs):
 
     return
 
+
 def git_pull():
-    if 0 != os.system("git stash"):
+    if 0 != os.system("git stash clear && git stash"):
         assert False
     if 0 != os.system("git pull"):
         assert False
