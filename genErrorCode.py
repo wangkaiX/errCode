@@ -166,13 +166,14 @@ def gitSync(gitAddList):
     strAdd = "git add " + " ".join(gitAddList)
     if 0 != os.system(strAdd):
         assert False
-    prog = subprocess.Popen(["git", "commit -m\"更新错误码\""], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    prog = subprocess.Popen(["git", "commit", "-m\"更新错误码\""], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (outstr, errstr) = prog.communicate()
+    print("out:", outstr, "err:", errstr)
     print("retcode:", prog.returncode)
     if 0 == prog.returncode:
         if 0 != os.system("git push"):
             assert False
-    if errstr.find("Your branch is up to date"):
+    if -1 != errstr.find("Your branch is up to date"):
         return
     else:
         assert False
