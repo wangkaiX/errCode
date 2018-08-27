@@ -93,7 +93,12 @@ def readFile(fileName):
 
 def readErrs(srcErrFiles):
     if 0 == len(srcErrFiles):
-        srcErrFiles = os.popen("ls etc/*.err").read().split()
+        srcFiles = os.listdir("etc")
+        srcErrFiles = []
+        for file in srcFiles:
+            if file.split()[-1] == ".err":
+                srcErrFiles.append(file)
+
     errList = []
     for srcErrFile in srcErrFiles:
         errList += readFile(srcErrFile)
@@ -137,7 +142,12 @@ def checkErrorRange(cf):
                 assert False
 
     # 检测每个项目是否超过所规则的错误码范围
-    srcErrFiles = os.popen("ls etc/*.err").read().split()
+    srcFiles = os.listdir("etc")
+    srcErrFiles = []
+    for file in srcFiles:
+        if file.split()[-1] == ".err":
+            srcErrFiles.append(file)
+
     for srcErrFile in srcErrFiles:
         section = os.path.basename(srcErrFile).split(".")[0]
         if not cf.has_section(section):
