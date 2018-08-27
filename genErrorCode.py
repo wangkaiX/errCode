@@ -45,7 +45,7 @@ def git_pull():
         assert False
     prog = subprocess.Popen(["git", "stash", "pop"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (outstr, errstr) = prog.communicate()
-    print outstr, errstr
+    print(outstr, errstr)
     if -1 == outstr.find("Dropped") and \
             -1 == errstr.find("No stash"):
         assert False
@@ -64,7 +64,7 @@ def readFile(fileName):
         errCode = l.split()
         if 2 == len(errCode):
             if -1 == value:
-                print "没有配置起始错误码!"
+                print("没有配置起始错误码!")
                 assert(-1 != value)
             code, msg = errCode
             value = value + 1
@@ -72,7 +72,7 @@ def readFile(fileName):
             code, msg, value = errCode
             value = int(value)
         else:
-            print "配置文件[" + fileName + "]有误, 第" + str(i) + "行"
+            print("配置文件[" + fileName + "]有误, 第" + str(i) + "行")
             assert False
         errList.append(ErrCode(code, msg, value))
     # 增加防冲突分割线
@@ -138,7 +138,7 @@ def checkErrorRange(cf):
             if (errorRangeList[j].b <= errorRangeList[i].b <= errorRangeList[j].e) \
             or (errorRangeList[j].b <= errorRangeList[i].e <= errorRangeList[j].e) \
             or (errorRangeList[i].b <= errorRangeList[j].b <= errorRangeList[i].e):
-                print "项目错误码范围重叠"
+                print("项目错误码范围重叠")
                 assert False
 
     # 检测每个项目是否超过所规则的错误码范围
@@ -151,13 +151,13 @@ def checkErrorRange(cf):
     for srcErrFile in srcErrFiles:
         section = os.path.basename(srcErrFile).split(".")[0]
         if not cf.has_section(section):
-            print "请先给项目[" + section + "]配置错误码范围"
+            print("请先给项目[" + section + "]配置错误码范围")
             assert False
         errList = readFile(srcErrFile)
         for err in errList:
             for errRange in errorRangeDict[section]:
                 if not errRange.b <= err.value <= errRange.e:
-                    print "错误码[" + section + "][" + err.code + "]超过范围"
+                    print("错误码[" + section + "][" + err.code + "]超过范围")
                     assert False
 
 
