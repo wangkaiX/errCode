@@ -175,7 +175,7 @@ def gitSync(gitAddList):
             assert False
         return
     print("find:", errstr.find("Your branch is up to date"))
-    if -1 != errstr.find("Your branch is up to date"):
+    if -1 != outstr.find("Your branch is up to date"):
         return
     else:
         assert False
