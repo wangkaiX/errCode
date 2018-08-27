@@ -166,7 +166,7 @@ def gitSync(gitAddList):
     strAdd = "git add " + " ".join(gitAddList)
     if 0 != os.system(strAdd):
         assert False
-    prog = subprocess.Popen(["git", "commit", "-m", "更新错误码"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    prog = subprocess.Popen(["git", "commit", "-m\"更新错误码\""], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (outstr, errstr) = prog.communicate()
     if 0 == prog.returncode:
         if 0 != os.system("git push"):
