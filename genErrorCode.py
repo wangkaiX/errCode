@@ -39,13 +39,13 @@ def genC(errList, dstDirs):
 
 
 def git_pull():
-    if 0 != os.system("git stash clear && git stash"):
+    if 0 != os.system("git stash"):
         assert False
     if 0 != os.system("git pull"):
         assert False
     prog = subprocess.Popen(["git", "stash", "pop"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (outstr, errstr) = prog.communicate()
-    print(outstr, errstr)
+    # print(outstr, errstr)
     if -1 == outstr.find("Dropped") and \
             -1 == errstr.find("No stash"):
         assert False
@@ -166,9 +166,9 @@ def gitSync(gitAddList):
     strAdd = "git add " + " ".join(gitAddList)
     if 0 != os.system(strAdd):
         assert False
-    prog = subprocess.Popen(["git", "commit", "-m\"更新错误码\""], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    (instr, outstr, errstr) = prog.communicate()
-    print("in:", instr)
+    prog = subprocess.Popen(["git", "commit -m\"更新错误码\""], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (outstr, errstr) = prog.communicate()
+    print("retcode:", prog.returncode)
     if 0 == prog.returncode:
         if 0 != os.system("git push"):
             assert False

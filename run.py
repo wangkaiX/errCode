@@ -19,4 +19,4 @@ gitAddList = ["genErrorCode.py", "etc/*.err", "etc/range.config", "etc/*.templat
 
 if __name__ == "__main__":
     genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList)
-
+#
