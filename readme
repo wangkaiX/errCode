@@ -1,6 +1,6 @@
 # 文件名以项目名，错误码命名[projectName.err]
 # 在etc/range.config中指定错误码的范围
-# 在defines.py指定生成的错误码，语言，位置等
+# 在run.py指定生成的错误码，语言，位置等
 # 格式：
 # 枚举值,  错误信息, 错误码
 # Success    成功     0
