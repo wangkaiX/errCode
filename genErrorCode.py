@@ -99,6 +99,7 @@ def readErrs(srcErrFiles):
                 srcErrFiles.append("etc/"+file)
 
     errList = []
+    print(srcErrFiles)
     for srcErrFile in srcErrFiles:
         errList += readFile(srcErrFile)
     return errList
@@ -147,6 +148,7 @@ def checkErrorRange(cf):
         if file.split()[-1] == ".err":
             srcErrFiles.append("etc/" + file)
 
+    print(srcErrFiles)
     for srcErrFile in srcErrFiles:
         section = os.path.basename(srcErrFile).split(".")[0]
         if not cf.has_section(section):
