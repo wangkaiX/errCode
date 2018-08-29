@@ -94,10 +94,10 @@ def readFile(fileName):
 def readErrs(srcErrFiles):
     if 0 == len(srcErrFiles):
         srcFiles = os.listdir("etc")
-        print("srcFiles")
+        print(97, srcFiles)
         for file in srcFiles:
             print file.split(".")[-1]
-            if file.split(".")[-1] == ".err":
+            if file.split(".")[-1] == "err":
                 srcErrFiles.append("etc/"+file)
 
     errList = []
@@ -147,10 +147,10 @@ def checkErrorRange(cf):
     srcFiles = os.listdir("etc")
     srcErrFiles = []
     for file in srcFiles:
-        if file.split(".")[-1] == ".err":
+        if file.split(".")[-1] == "err":
             srcErrFiles.append("etc/" + file)
 
-    print(srcErrFiles)
+    print("153", srcErrFiles)
     for srcErrFile in srcErrFiles:
         section = os.path.basename(srcErrFile).split(".")[0]
         if not cf.has_section(section):
@@ -171,13 +171,10 @@ def gitSync(gitAddList):
         assert False
     prog = subprocess.Popen(["git", "commit", "-m\"更新错误码\""], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (outstr, errstr) = prog.communicate()
-    print("out:", outstr, "err:", errstr)
-    print("retcode:", prog.returncode)
     if 0 == prog.returncode:
         if 0 != os.system("git push"):
             assert False
         return
-    print("find:", errstr.find("Your branch is up to date"))
     if -1 != outstr.find("Your branch is up to date"):
         return
     else:
