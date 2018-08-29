@@ -94,8 +94,10 @@ def readFile(fileName):
 def readErrs(srcErrFiles):
     if 0 == len(srcErrFiles):
         srcFiles = os.listdir("etc")
+        print("srcFiles")
         for file in srcFiles:
-            if file.split()[-1] == ".err":
+            print file.split(".")[-1]
+            if file.split(".")[-1] == ".err":
                 srcErrFiles.append("etc/"+file)
 
     errList = []
@@ -145,7 +147,7 @@ def checkErrorRange(cf):
     srcFiles = os.listdir("etc")
     srcErrFiles = []
     for file in srcFiles:
-        if file.split()[-1] == ".err":
+        if file.split(".")[-1] == ".err":
             srcErrFiles.append("etc/" + file)
 
     print(srcErrFiles)
