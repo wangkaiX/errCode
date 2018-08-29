@@ -9,7 +9,7 @@ dstDirs = ["."]
 
 # ["c", "java", "go"]不指定则不生成
 # dstLanguages = ["c", "java", "go"]
-dstLanguages = ["go"]
+dstLanguages = ["go", "java"]
 
 # ["a.err", "b.err"]不指定则默认生成所有的错误码
 srcErrFiles = []
