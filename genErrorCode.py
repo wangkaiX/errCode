@@ -13,7 +13,7 @@ from pkg.CGen import CGen
 from pkg.ErrCode import ErrCode
 
 
-cf = ConfigParser.ConfigParser()
+configParser = ConfigParser.ConfigParser()
 configFile = "etc/range.config"
 
 
@@ -107,7 +107,7 @@ def readErrs(srcErrFiles):
     return errList
 
 
-def checkErrorRange(cf):
+def checkErrorRange(configParser):
     class ErrorRange:
         def __init__(self, b, e):
             self.b = b
@@ -118,12 +118,12 @@ def checkErrorRange(cf):
 
     # 检测每个项目的错误码范围是否有重合
     errorRangeDict = defaultdict(list)
-    for section in cf.sections():
+    for section in configParser.sections():
         i = 0
         b = "begin" + str(i)
         e = "end" + str(i)
-        while cf.has_option(section, b) and cf.has_option(section, e):
-            errorRangeDict[section].append(ErrorRange(cf.getint(section, b), cf.getint(section, e)))
+        while configParser.has_option(section, b) and configParser.has_option(section, e):
+            errorRangeDict[section].append(ErrorRange(configParser.getint(section, b), configParser.getint(section, e)))
             i = i+1
             b = "begin" + str(i)
             e = "end" + str(i)
@@ -153,7 +153,7 @@ def checkErrorRange(cf):
     print("153", srcErrFiles)
     for srcErrFile in srcErrFiles:
         section = os.path.basename(srcErrFile).split(".")[0]
-        if not cf.has_section(section):
+        if not configParser.has_section(section):
             print("请先给项目[" + section + "]配置错误码范围")
             assert False
         errList = readFile(srcErrFile)
@@ -186,9 +186,9 @@ def genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList):
     assert(os.path.exists(configFile))
     # 先同步git
     git_pull()
-    cf.read(configFile)
+    configParser.read(configFile)
     # 检查错误码范围是否有重叠
-    checkErrorRange(cf)
+    checkErrorRange(configParser)
     # 读入错误配置
     errList = readErrs(srcErrFiles)
     for dstLanguage in dstLanguages:
