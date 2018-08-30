@@ -4,4 +4,5 @@ JobNotFound                作业不存在
 SaveAlgoFailed             保存算法失败
 UpdateDbFailed             更新数据库失败
 QueryDbFailed              查询数据库失败
+testError                  测试错误码
 ####################在分割线后增加####################
