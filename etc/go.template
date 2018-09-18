@@ -25,7 +25,7 @@ func (ce *CustomError)ToError()(error) {
     return errors.New(string(bError))
 }
 
-func genCustomError(errCode ErrCode) (err error) {
+func genError(errCode ErrCode) (err error) {
     bError, _ := json.Marshal(CustomError{errCode, ErrMsgMap[errCode]})
     return errors.New(string(bError))
 }
