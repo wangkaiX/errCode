@@ -1,8 +1,10 @@
 # 文件名以项目名，错误码命名[projectName.err]
-# 在etc/range.config中指定错误码的范围
-# 在run.py指定生成的错误码，语言，位置等
+# 使用时复制一份run.py 以防冲突, 将其中的run.py替换为run.copyname.py
+# 在run.copyname.py指定生成的错误码，语言，位置等
 # 格式：
-# 枚举值,  错误信息, 错误码
-# Success    成功     0
+# 枚举值,  错误信息  [错误码]
+# Success    成功     [0]
 #
-# 使用时复制一份run.py 以防冲突, 修改gitAddList, 将其中的run.py替换为run.copyname.py
+#
+sudo apt install python3
+pip3 install mako -i https://pypi.tuna.tsinghua.edu.cn/simple
