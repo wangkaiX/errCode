@@ -1,22 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from genErrorCode import genErrors
-
-# ["pro/src/"]不指定则不生成
-# dstDirs = ["../", "/tmp", "."]
-dstDirs = ["."]
-
-# ["c", "java", "go"]不指定则不生成
-# dstLanguages = ["c", "java", "go"]
-dstLanguages = ["java"]
-
-# ["a.err", "b.err"]不指定则默认生成所有的错误码
-srcErrFiles = []
-
-# 需要同步及更新的文件
-gitAddList = ["genErrorCode.py", "etc/*.err", "etc/range.config", "etc/*.template", "pkg/*.py", "readme", "run.wangkay.py"]
+from pkg.go_err import GoGen
 
 if __name__ == "__main__":
-    genErrors(srcErrFiles, dstDirs, dstLanguages, gitAddList)
-
+    go_err = GoGen("etc/privategql.err", 40000, 50000)
+    print(go_err.gen())
