@@ -3,7 +3,7 @@
 
 from mako.template import Template
 import os
-import pkg.data_type as data_type
+import error_code_pkg.data_type as data_type
 
 
 class GoGen:
