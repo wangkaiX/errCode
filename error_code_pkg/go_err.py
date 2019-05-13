@@ -30,21 +30,27 @@ class GoGen:
         f = open(self.err_file)
         ls = f.readlines()
         counter = self.begin_no
+
+        def check_number(number, begin, end):
+            if 0 != number:
+                assert number >= begin and number <= end
+
         for l in ls:
             if l.strip(" \n\r\t") == "" or l[0] == "#":
                 continue
-            assert counter <= self.end_no
+
             err_line = l.split()
             assert len(err_line) > 1
             if 2 == len(err_line):
                 code, msg = err_line
+                check_number(counter, self.begin_no, self.end_no)
                 number = counter
                 self.append(data_type.ErrorInfo(code, msg, number))
                 counter = counter + 1
             elif 3 == len(err_line):
                 code, msg, number = err_line
                 number = int(number)
-                assert number <= self.end_no
+                check_number(number, self.begin_no, self.end_no)
                 self.append(data_type.ErrorInfo(code, msg, number))
                 counter = number + 1
 
