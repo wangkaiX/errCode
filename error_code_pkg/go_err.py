@@ -20,6 +20,9 @@ class GoGen:
 
     def gen(self):
         mako_file = "etc/go.mako"
+        curr_path = os.path.split(os.path.realpath(__file__))[0] + "/../"
+        mako_file = curr_path + mako_file
+        print("mako_file:", mako_file)
         if not os.path.exists(mako_file):
             print(mako_file + " not exists!")
             assert False
@@ -28,6 +31,8 @@ class GoGen:
         ls = f.readlines()
         counter = self.begin_no
         for l in ls:
+            if l.strip(" \n\r\t") == "" or l[0] == "#":
+                continue
             assert counter <= self.end_no
             err_line = l.split()
             assert len(err_line) > 1
@@ -43,5 +48,5 @@ class GoGen:
                 self.append(data_type.ErrorInfo(code, msg, number))
                 counter = number + 1
 
-        t = Template(filename="etc/go.mako", input_encoding="utf8")
+        t = Template(filename=mako_file, input_encoding="utf8")
         return t.render(err_infos=self.err_infos, package_name=self.package_name)

@@ -20,8 +20,8 @@ var ErrMsgMap = map[ErrCode]string {
 }
 
 type CustomError struct {
-    RetCode ErrCode  `json:"retCode"`
-    Message string   `json:"message"`
+    ErrCode ErrCode  `json:"err_code"`
+    ErrMsg string    `json:"err_msg"`
 }
 
 func (ce *CustomError)ToError()(error) {
@@ -29,7 +29,12 @@ func (ce *CustomError)ToError()(error) {
     return errors.New(string(bError))
 }
 
-func genError(errCode ErrCode) (err error) {
+func GenError(errCode ErrCode) (err error) {
     bError, _ := json.Marshal(CustomError{errCode, ErrMsgMap[errCode]})
+    return errors.New(string(bError))
+}
+
+func WithInfoError(errCode ErrCode ,info string) (err error) {
+    bError, _ := json.Marshal(CustomError{errCode, ErrMsgMap[errCode] + ":" + info})
     return errors.New(string(bError))
 }
