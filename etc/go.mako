@@ -25,8 +25,25 @@ type CustomError struct {
 }
 
 func (ce *CustomError)ToError()(error) {
-    bError, _ := json.Marshal(ce)
-    return errors.New(string(bError))
+    return errors.New(string(ce.ToJson()))
+}
+
+func (ce *CustomError)ToJson()([]byte) {
+    s, _ := json.Marshal(ce)
+    return s
+}
+
+func FromJson(buf []byte)(*CustomError, error) {
+    var ce CustomError
+    err := json.Unmarshal(buf, &ce)
+    if err != nil {
+        return nil, err
+    }
+    return &ce, nil
+}
+
+func GenJson(errCode ErrCode) ([]byte) {
+    return (&CustomError{errCode, ErrMsgMap[errCode]}).ToJson()
 }
 
 func GenError(errCode ErrCode) (err error) {
