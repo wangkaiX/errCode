@@ -7,27 +7,25 @@ import error_code_pkg.data_type as data_type
 
 
 class GoGen:
-    def __init__(self, err_file, begin_no, end_no, package_name='errno'):
+    def __init__(self, error_file, begin_no, end_no, out_file):
         self.err_infos = []
-        self.err_file = err_file
+        self.error_file = error_file
         self.begin_no = begin_no
         self.end_no = end_no
-        self.package_name = package_name
+        self.out_file = out_file
+        self.package_name = os.path.basename(os.path.dirname(out_file))
 
     def append(self, err_info):
         if err_info not in self.err_infos:
             self.err_infos.append(err_info)
 
     def gen(self):
-        mako_file = "etc/go.mako"
-        curr_path = os.path.split(os.path.realpath(__file__))[0] + "/../"
-        mako_file = curr_path + mako_file
-        print("mako_file:", mako_file)
-        if not os.path.exists(mako_file):
-            print(mako_file + " not exists!")
+        print("error_file:", self.error_file)
+        if not os.path.exists(self.error_file):
+            print(self.error_file + " not exists!")
             assert False
 
-        f = open(self.err_file)
+        f = open(self.error_file)
         ls = f.readlines()
         counter = self.begin_no
         for l in ls:
@@ -48,5 +46,10 @@ class GoGen:
                 self.append(data_type.ErrorInfo(code, msg, number))
                 counter = number + 1
 
+        curr_path = os.path.split(os.path.realpath(__file__))[0] + "/../"
+        mako_file = curr_path + "etc/error.go"
         t = Template(filename=mako_file, input_encoding="utf8")
-        return t.render(err_infos=self.err_infos, package_name=self.package_name)
+        s = t.render(err_infos=self.err_infos, package_name=self.package_name)
+        with open(self.out_file, "w") as f:
+            f.write(s)
+        return s
