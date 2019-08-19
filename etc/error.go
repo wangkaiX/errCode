@@ -1,10 +1,8 @@
 package ${package_name}
 
 import (
-    "fmt"
     "encoding/json"
     "errors"
-	"strings"
 )
 
 const (
@@ -22,6 +20,7 @@ var ErrMsg = map[int32]string {
 type Error struct {
     Code int32    `json:"code"`
     Msg string    `json:"msg"`
+	Detail string `json:"detail"`
 }
 
 func (ce *Error)Error()(error) {
@@ -37,7 +36,7 @@ func (ce *Error)String() string {
 	return string(ce.Json())
 }
 
-func GenSuccess() Error {
+func GenSuccess() *Error {
 	return GenError(Success)
 }
 
@@ -50,17 +49,14 @@ func FromJson(buf []byte)(*Error, error) {
     return &ce, nil
 }
 
-func GenJson(errCode int32) ([]byte) {
-    return (&Error{errCode, ErrMsg[errCode]}).Json()
+// func GenJson(errCode int32) ([]byte) {
+//     return (&Error{errCode, ErrMsg[errCode], ErrMsg[errCode]}).Json()
+// }
+
+func GenError(errCode int32) (*Error) {
+	return &Error{errCode, ErrMsg[errCode], ""}
 }
 
-func GenError(errCode int32) (Error) {
-	return Error{errCode, ErrMsg[errCode]}
-}
-
-func GenErrorWithInfo(errCode int32, info string) (Error) {
-    if strings.Index(info, ErrMsg[errCode]) == -1 {
-        info = fmt.Sprintf("%s[%s]", ErrMsg[errCode], info)
-    }
-	return Error{errCode, info}
+func GenErrorWithInfo(errCode int32, info string) (*Error) {
+	return &Error{errCode, ErrMsg[errCode], info}
 }
