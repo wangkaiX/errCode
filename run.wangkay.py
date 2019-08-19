@@ -4,5 +4,5 @@
 from error_code_pkg.go_err import GoGen
 
 if __name__ == "__main__":
-    gen = GoGen("etc/privategql.err", 10000, 10999, "error.go")
+    gen = GoGen("etc/privategql.err", 10000, 10999, "errno/error.go")
     print(gen.gen())
