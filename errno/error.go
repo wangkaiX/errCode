@@ -1,4 +1,4 @@
-package 
+package errno
 
 import (
     "encoding/json"
@@ -6,6 +6,7 @@ import (
 )
 
 const (
+   Success int32 = 0
    UserNotFound int32 = 10000
    JobStatusMismatched int32 = 10001
    JobNotFound int32 = 10002
@@ -18,6 +19,7 @@ const (
 )
 
 var ErrMsg = map[int32]string {
+    Success:"成功",
     UserNotFound:"用户不存在",
     JobStatusMismatched:"作业状态不匹配",
     JobNotFound:"作业不存在",
