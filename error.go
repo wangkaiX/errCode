@@ -1,26 +1,23 @@
-package errno
+package 
 
 import (
-    "fmt"
     "encoding/json"
     "errors"
 )
 
-type ErrCode int
-
 const (
-   UserNotFound ErrCode = 40000
-   JobStatusMismatched ErrCode = 40001
-   JobNotFound ErrCode = 40002
-   SaveAlgoFailed ErrCode = 40003
-   UpdateDbFailed ErrCode = 40004
-   QueryDbFailed ErrCode = 40005
-   testError ErrCode = 40006
-   bbb ErrCode = 40007
-   aaa ErrCode = 40008
+   UserNotFound int32 = 10000
+   JobStatusMismatched int32 = 10001
+   JobNotFound int32 = 10002
+   SaveAlgoFailed int32 = 10003
+   UpdateDbFailed int32 = 10004
+   QueryDbFailed int32 = 10005
+   testError int32 = 10006
+   bbb int32 = 10007
+   aaa int32 = 10008
 )
 
-var ErrMsg = map[ErrCode]string {
+var ErrMsg = map[int32]string {
     UserNotFound:"用户不存在",
     JobStatusMismatched:"作业状态不匹配",
     JobNotFound:"作业不存在",
@@ -33,17 +30,26 @@ var ErrMsg = map[ErrCode]string {
 }
 
 type Error struct {
-    ErrCode ErrCode  `json:"err_code"`
-    ErrMsg string    `json:"err_msg"`
+    Code int32    `json:"code"`
+    Msg string    `json:"msg"`
+	Detail string `json:"detail"`
 }
 
-func (ce *Error)ToError()(error) {
-    return errors.New(string(ce.ToJson()))
+func (ce *Error)Error()(error) {
+    return errors.New(string(ce.Json()))
 }
 
-func (ce *Error)ToJson()([]byte) {
+func (ce *Error)Json()([]byte) {
     s, _ := json.Marshal(ce)
     return s
+}
+
+func (ce *Error)String() string {
+	return string(ce.Json())
+}
+
+func GenSuccess() *Error {
+	return GenError(Success)
 }
 
 func FromJson(buf []byte)(*Error, error) {
@@ -55,16 +61,14 @@ func FromJson(buf []byte)(*Error, error) {
     return &ce, nil
 }
 
-func GenJson(errCode ErrCode) ([]byte) {
-    return (&Error{errCode, ErrMsg[errCode]}).ToJson()
+// func GenJson(errCode int32) ([]byte) {
+//     return (&Error{errCode, ErrMsg[errCode], ErrMsg[errCode]}).Json()
+// }
+
+func GenError(errCode int32) (*Error) {
+	return &Error{errCode, ErrMsg[errCode], ""}
 }
 
-func GenError(errCode ErrCode) (err error) {
-    bError, _ := json.Marshal(Error{errCode, ErrMsg[errCode]})
-    return errors.New(string(bError))
-}
-
-func WithInfoError(errCode ErrCode ,info string) (err error) {
-    bError, _ := json.Marshal(Error{errCode, fmt.Sprintf("%s[%s]", ErrMsg[errCode], info)})
-    return errors.New(string(bError))
+func GenErrorWithInfo(errCode int32, info string) (*Error) {
+	return &Error{errCode, ErrMsg[errCode], info}
 }
