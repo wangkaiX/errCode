@@ -1,1 +1,3 @@
 *.pyc
+**/go.mod
+**/go.sum
