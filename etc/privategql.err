@@ -1,4 +1,5 @@
-UserNotFound               用户不存在                                       40000
+Success                    成功                               0
+UserNotFound               用户不存在                                       10000
 JobStatusMismatched        作业状态不匹配
 JobNotFound                作业不存在
 SaveAlgoFailed             保存算法失败
